@@ -27,7 +27,7 @@ class AvailableTasksView(UserProfileRequiredMixin, FilterView):
         now = timezone.now()
 
         # Only filter by dates if they are not null.
-        start_filter = Q(start_date__isnull=True) | Q(start_date__gt=now)
+        start_filter = Q(start_date__isnull=True) | Q(start_date__lt=now)
         end_filter = Q(end_date__isnull=True) | Q(end_date__gt=now)
 
         return (Task.objects
