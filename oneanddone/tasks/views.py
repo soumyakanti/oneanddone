@@ -30,12 +30,8 @@ class AvailableTasksView(UserProfileRequiredMixin, FilterView):
         start_filter = Q(start_date__isnull=True) | Q(start_date__gt=now)
         end_filter = Q(end_date__isnull=True) | Q(end_date__gt=now)
 
-        # Exclude finished tasks, unless they allow multiple finishes.
-        finished_filter = (Q(allow_multiple_finishes=True) |
-                           ~Q(taskattempt__state=TaskAttempt.FINISHED))
-
         return (Task.objects
-                .filter(start_filter, end_filter, finished_filter)
+                .filter(start_filter, end_filter)
                 .order_by('-execution_time'))
 
 
