@@ -97,9 +97,11 @@ class TaskAttempt(CreatedModifiedModel):
 
     STARTED = 0
     FINISHED = 1
+    ABANDONED = 2
     state = models.IntegerField(default=STARTED, choices=(
         (STARTED, 'Started'),
-        (FINISHED, 'Finished')
+        (FINISHED, 'Finished'),
+        (ABANDONED, 'Abandoned')
     ))
 
     def __unicode__(self):
