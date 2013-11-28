@@ -70,7 +70,7 @@ class AbandonTaskView(UserProfileRequiredMixin, generic.detail.SingleObjectMixin
         attempt.state = TaskAttempt.ABANDONED
         attempt.save()
 
-        return redirect('tasks.feedback', task.pk)
+        return redirect('tasks.feedback.aborted', task.pk, kwargs={'aborted':True})
 
 
 class FinishTaskView(UserProfileRequiredMixin, generic.detail.SingleObjectMixin, generic.View):
@@ -83,13 +83,18 @@ class FinishTaskView(UserProfileRequiredMixin, generic.detail.SingleObjectMixin,
         attempt.state = TaskAttempt.FINISHED
         attempt.save()
 
-        return redirect('tasks.feedback', task.pk)
+        return redirect('tasks.feedback.completed', task.pk, kwargs={'aborted':False})
 
 
 class CreateFeedbackView(UserProfileRequiredMixin, generic.CreateView):
     model = Feedback
     form_class = FeedbackForm
-    template_name = 'tasks/feedback.html'
+    
+    def get_template_names(self, **kwargs):
+        status = self.kwargs.get('aborted')
+        if status:
+            return['tasks/abandon_feedback.html']
+        return['tasks/completion_feedback.html']
 
     def dispatch(self, request, *args, **kwargs):
         self.task = get_object_or_404(Task, pk=kwargs['pk'])

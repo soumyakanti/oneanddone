@@ -1,12 +1,9 @@
 {# This Source Code Form is subject to the terms of the Mozilla Public
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/. #}
-{% extends 'base/base.html' %}
+{% extends 'tasks/base_feedback.html' %}
 
-{% set title = task.name %}
-
-{% block content %}
-  <h1>{{ task.name }}</h1>
+{% block feedback_message %}
   <h2>{{ _('Thank you!') }}</h2>
   <p>
     {% trans %}
@@ -15,16 +12,4 @@
       here.
     {% endtrans %}
   </p>
-  <p>
-    {% trans %}
-      We'd love to know what we're doing right, what to keep doing, and what to
-      start doing.
-    {% endtrans %}
-  </p>
-  <form method="post">
-    {{ csrf() }}
-    {{ form.as_p() }}
-    <button type="submit">{{ _('Submit feedback') }}</button>
-  </form>
-  <a href="{{ url('users.profile.detail') }}">{{ _('No, thanks.') }}</a>
 {% endblock %}
